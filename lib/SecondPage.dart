@@ -52,203 +52,213 @@ class _SecondPageState extends State<SecondPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SafeArea(
-            child: ListView(
-      children: [
-        Column(
-          children: <Widget>[
-            Padding(
-                padding: EdgeInsets.only(left: 20, top: 20, right: 20),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+          body: SafeArea(
+              child: ListView(
+        children: [
+          Column(
+            children: <Widget>[
+              Padding(
+                  padding: EdgeInsets.only(left: 20, top: 20, right: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Add Task",
+                        style: TextStyle(
+                            fontSize: 40, fontWeight: FontWeight.bold),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.close,
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  )),
+              Padding(
+                padding: EdgeInsets.only(left: 20, right: 20, top: 30),
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    labelText: "Task Name",
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      name = value;
+                    });
+                  },
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+                child: TextField(
+                  minLines: 10,
+                  maxLines: null,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    labelText: "Task Description",
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      description = value;
+                    });
+                  },
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 20, right: 20, top: 30),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Add Task",
+                      "Task Date",
                       style:
-                          TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.close,
-                        size: 30,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
+                    TextButton(
+                        onPressed: () {
+                          DatePicker.showDatePicker(context,
+                              showTitleActions: true,
+                              minTime: DateTime(2022, 1, 1),
+                              maxTime: DateTime(2030, 12, 12),
+                              onChanged: (date) {
+                            print('change $date');
+                          }, onConfirm: (date) {
+                            print('confirm $date');
+                            setState(() {
+                              dateOfTask = date;
+                            });
+                          },
+                              currentTime: DateTime.now(),
+                              locale: LocaleType.en);
+                        },
+                        child: Text(
+                          'Pick Date',
+                          style: TextStyle(color: Colors.blue),
+                        ))
                   ],
-                )),
-            Padding(
-              padding: EdgeInsets.only(left: 20, right: 20, top: 30),
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  labelText: "Task Name",
                 ),
-                onChanged: (value) {
-                  setState(() {
-                    name = value;
-                  });
-                },
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20, right: 20, top: 20),
-              child: TextField(
-                minLines: 10,
-                maxLines: null,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  labelText: "Task Description",
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    description = value;
-                  });
-                },
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20, right: 20, top: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Task Date",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        DatePicker.showDatePicker(context,
-                            showTitleActions: true,
-                            minTime: DateTime(2022, 1, 1),
-                            maxTime: DateTime(2030, 12, 12), onChanged: (date) {
-                          print('change $date');
-                        }, onConfirm: (date) {
-                          print('confirm $date');
-                          setState(() {
-                            dateOfTask = date;
-                          });
-                        }, currentTime: DateTime.now(), locale: LocaleType.en);
+              Padding(
+                padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Task Priority",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    DropdownButton<String>(
+                      items: <String>['Low', 'Medium', 'High', 'Urgent']
+                          .map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      value: taskPriority,
+                      onChanged: (val) {
+                        setState(() {
+                          taskPriority = val!;
+                        });
                       },
-                      child: Text(
-                        'Pick Date',
-                        style: TextStyle(color: Colors.blue),
-                      ))
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20, right: 20, top: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Task Priority",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  DropdownButton<String>(
-                    items: <String>['Low', 'Medium', 'High', 'Urgent']
-                        .map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    value: taskPriority,
-                    onChanged: (val) {
-                      setState(() {
-                        taskPriority = val!;
-                      });
-                    },
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20, right: 20, top: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Task Status",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  DropdownButton<String>(
-                    items: <String>['Not Started', 'In Progress', 'Completed']
-                        .map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    value: taskStatus,
-                    onChanged: (val) {
-                      setState(() {
-                        taskStatus = val!;
-                      });
-                    },
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20, right: 20, top: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Task Category",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  DropdownButton<String>(
-                    items: <String>['Personal', 'Work', 'School', 'Shop']
-                        .map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    value: taskCategory,
-                    onChanged: (val) {
-                      setState(() {
-                        taskCategory = val!;
-                      });
-                    },
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20, right: 20, top: 30),
-              child: ElevatedButton(
-                onPressed: () {
-                  addTask();
-                },
-                child: Text("Add Task"),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateColor.resolveWith(
-                    (Set<MaterialState> states) {
-                      return Color(0xFF00C569);
-                    },
-                  ),
-                  foregroundColor: MaterialStateColor.resolveWith(
-                    (Set<MaterialState> states) {
-                      return Color(0xFFFFFFFF);
-                    },
-                  ),
-                  elevation: MaterialStateProperty.all<double>(0),
+                    )
+                  ],
                 ),
               ),
-            )
-          ],
-        ),
-      ],
-    )));
+              Padding(
+                padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Task Status",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    DropdownButton<String>(
+                      items: <String>['Not Started', 'In Progress', 'Completed']
+                          .map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      value: taskStatus,
+                      onChanged: (val) {
+                        setState(() {
+                          taskStatus = val!;
+                        });
+                      },
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Task Category",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    DropdownButton<String>(
+                      items: <String>['Personal', 'Work', 'School', 'Shop']
+                          .map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      value: taskCategory,
+                      onChanged: (val) {
+                        setState(() {
+                          taskCategory = val!;
+                        });
+                      },
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 20, right: 20, top: 30),
+                child: ElevatedButton(
+                  onPressed: () {
+                    addTask();
+                  },
+                  child: Text("Add Task"),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateColor.resolveWith(
+                      (Set<MaterialState> states) {
+                        return Color(0xFF00C569);
+                      },
+                    ),
+                    foregroundColor: MaterialStateColor.resolveWith(
+                      (Set<MaterialState> states) {
+                        return Color(0xFFFFFFFF);
+                      },
+                    ),
+                    elevation: MaterialStateProperty.all<double>(0),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ],
+      ))),
+    );
   }
 }

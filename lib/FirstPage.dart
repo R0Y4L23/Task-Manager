@@ -80,6 +80,15 @@ class _FirstPageState extends State<FirstPage> {
           _todos.isNotEmpty
               ? ListView.builder(
                   itemBuilder: (context, index) {
+                    String pending = "";
+
+                    if (DateTime.now()
+                        .isAfter(DateTime.parse(_todos[index]['dateOfTask']))) {
+                      pending = "Pending";
+                    } else {
+                      pending = "";
+                    }
+
                     return Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -88,14 +97,17 @@ class _FirstPageState extends State<FirstPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        title: Text(
-                          _todos[index]['name'],
-                          style: TextStyle(
-                              fontSize: 25,
-                              decoration:
-                                  _todos[index]['taskStatus'] == "Completed"
-                                      ? TextDecoration.lineThrough
-                                      : TextDecoration.none),
+                        title: Padding(
+                          padding: EdgeInsets.only(top: 15),
+                          child: Text(
+                            _todos[index]['name'],
+                            style: TextStyle(
+                                fontSize: 25,
+                                decoration:
+                                    _todos[index]['taskStatus'] == "Completed"
+                                        ? TextDecoration.lineThrough
+                                        : TextDecoration.none),
+                          ),
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -220,8 +232,18 @@ class _FirstPageState extends State<FirstPage> {
                               Text(
                                 _todos[index]['taskCategory'],
                                 style: TextStyle(fontSize: 15),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                pending.toUpperCase(),
+                                style: TextStyle(color: Colors.red),
                               )
-                            ])
+                            ]),
+                            SizedBox(
+                              height: 15,
+                            ),
                           ],
                         ),
                         tileColor: colors[Random().nextInt(colors.length)],
