@@ -20,6 +20,7 @@ class _SecondPageState extends State<SecondPage> {
   String taskPriority = "Low";
   String taskStatus = "Not Started";
   String taskCategory = "Personal";
+  bool isDateEdited = false;
   DateTime dateOfTask = DateTime.now();
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -137,13 +138,14 @@ class _SecondPageState extends State<SecondPage> {
                             print('confirm $date');
                             setState(() {
                               dateOfTask = date;
+                              isDateEdited = true;
                             });
                           },
                               currentTime: DateTime.now(),
                               locale: LocaleType.en);
                         },
                         child: Text(
-                          'Pick Date',
+                          isDateEdited ? 'Date Picked' : 'Pick Date',
                           style: TextStyle(color: Colors.blue),
                         ))
                   ],

@@ -51,6 +51,7 @@ class _FirstPageState extends State<FirstPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
+            child: SingleChildScrollView(
       child: Column(
         children: <Widget>[
           Padding(
@@ -272,6 +273,6 @@ class _FirstPageState extends State<FirstPage> {
                 )),
         ],
       ),
-    ));
+    )));
   }
 }
